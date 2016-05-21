@@ -78,10 +78,10 @@ function template_preprocess_field_slideshow(&$variables) {
     $variables['#attached']['drupalSettings']['field_slideshow'] = array(
       'field-slideshow-' . $variables['slideshow_id'] => $js_variables,
     );
-    if (file_exists($libraries_path . '/jquery.cycle/jquery.cycle.all.min.js')) {
+    if (file_exists($libraries_path . '/jquery.cycle/jquery.cycle.all.min.js') || file_exists(DRUPAL_ROOT . '/' . libraries_get_path('jquery.cycle') . '/jquery.cycle.all.min.js')) {
       $variables['#attached']['library'][] = 'field_slideshow/field_slideshow.jquery.cycle.min';
     }
-    elseif (file_exists($libraries_path . '/jquery.cycle/jquery.cycle.all.js')) {
+    elseif (file_exists($libraries_path . '/jquery.cycle/jquery.cycle.all.js') || file_exists(DRUPAL_ROOT . '/' . libraries_get_path('jquery.cycle') . '/jquery.cycle.all.js')) {
       $variables['#attached']['library'][] = 'field_slideshow/field_slideshow.jquery.cycle.all';
     }
 
@@ -296,4 +296,16 @@ function field_slideshow_colorbox_settings_alter(&$settings, &$style) {
   }
 
   //slideshow=true&slideshowAuto=true&slideshowSpeed=4000&speed=350&transition=elastic
+}
+
+/**
+ * Implements hook_library_info_alter().
+ */
+function field_slideshow_library_info_alter(&$libraries, $extension) {
+  if ($extension == 'field_slideshow' && \Drupal::moduleHandler()->moduleExists('libraries')) {
+    if(file_exists(DRUPAL_ROOT . '/' . libraries_get_path('jquery.cycle') . '/jquery.cycle.all.min.js'))
+      $libraries['field_slideshow.jquery.cycle.min']['js'] = ['/'.libraries_get_path('jquery.cycle') . '/jquery.cycle.all.min.js' => []];
+    if(file_exists(DRUPAL_ROOT . '/' . libraries_get_path('jquery.cycle') . '/jquery.cycle.all.js'))
+      $libraries['field_slideshow.jquery.cycle.all']['js'] = ['/'.libraries_get_path('jquery.cycle') . '/jquery.cycle.all.js' => []];
+  }
 }

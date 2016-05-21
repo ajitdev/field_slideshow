@@ -383,7 +383,7 @@ class FieldSlideshow extends ImageFormatter {
     $files = $this->getEntitiesToView($items, $langcode);
     // Check plugins
     if (\Drupal::moduleHandler()->moduleExists('libraries')) {
-      if (!file_exists(DRUPAL_ROOT . '/libraries/jquery.cycle/jquery.cycle.all.min.js') && !file_exists(DRUPAL_ROOT . '/libraries/jquery.cycle/jquery.cycle.all.js')) {
+      if (!file_exists(DRUPAL_ROOT . '/' . libraries_get_path('jquery.cycle'). '/jquery.cycle.all.min.js') && !file_exists(DRUPAL_ROOT . '/' . libraries_get_path('jquery.cycle'). '/jquery.cycle.all.js')) {
         $url = Url::fromRoute('system.status');
         drupal_set_message(t('JQuery Cycle must be installed in order to run the slideshow. Please go to !page for instructions.', array('!page' => \Drupal::l(t('Status Report'), $url))), 'warning', FALSE);
       }
