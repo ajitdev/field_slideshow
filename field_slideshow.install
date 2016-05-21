@@ -16,7 +16,11 @@ function field_slideshow_requirements($phase) {
 	if ($phase == 'runtime') {
 		//$path = libraries_get_path('jquery.cycle');
     $path = '';
-    if ($path == '') $path = DRUPAL_ROOT . '/libraries/jquery.cycle';
+    if ($path == ''){ 
+      $path = DRUPAL_ROOT . '/libraries/jquery.cycle';
+      if(\Drupal::moduleHandler()->moduleExists('libraries'))
+        $path = DRUPAL_ROOT . '/' . libraries_get_path('jquery.cycle');
+    }
     if (file_exists($path . '/jquery.cycle.all.min.js') || file_exists($path . '/jquery.cycle.all.js')) {
       $requirements['field_slideshow_cycle_plugin'] = array(
         'title'     => t('JQuery Cycle plugin'),
